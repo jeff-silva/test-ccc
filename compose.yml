@@ -1,0 +1,29 @@
+volumes:
+  cloudbeaver_volume:
+
+services:
+  frontend:
+    image: node:22
+    working_dir: /app
+    command: bash -c "yarn install && yarn dev"
+    volumes:
+      - ./frontend/app:/app
+    ports:
+      - 3000:3000
+
+  laravel:
+    image: bitnami/laravel:latest
+    env_file:
+      - ./backend/app/.env
+    volumes:
+      - ./backend/app:/app
+    ports:
+      - 8000:8000
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver
+    volumes:
+      - cloudbeaver_volume:/opt/cloudbeaver/workspace
+      - ./backend/app/database/database.sqlite:/opt/cloudbeaver/sqlite_databases/database.sqlite
+    ports:
+      - 8978:8978
