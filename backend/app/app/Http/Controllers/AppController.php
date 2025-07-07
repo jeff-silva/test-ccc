@@ -8,7 +8,8 @@ class AppController extends Controller
 {
     public function load(Request $request)
     {
-        $user = $request->user();
+        $token = $request->bearerToken();
+        $user = auth()->guard('sanctum')->user();
         return compact(['user']);
     }
 }

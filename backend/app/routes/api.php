@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::get('/app/load', [App\Http\Controllers\AppController::class, 'load'])->name('app.load')->middleware('auth:sanctum');
+Route::get('/app/load', [App\Http\Controllers\AppController::class, 'load'])->name('app.load');
 
 Route::post('/auth/login', [App\Http\Controllers\AuthController::class, 'login'])->name('auth.login');
 Route::post('/auth/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('auth.logout');

@@ -46,10 +46,14 @@ export default (options = {}) => {
         opts[attr] = value;
       }
 
+      if (opts.headers["Authorization"]) {
+        delete opts.headers["Authorization"];
+      }
+
       if (opts.url && opts.url.startsWith("/api")) {
         opts.url = opts.url.replace("/api", "http://localhost:8000/api");
 
-        const access_token = localStorage.getItem("access_token");
+        const access_token = localStorage.getItem("access_token") || null;
         if (access_token) {
           opts.headers["Authorization"] = `Bearer ${access_token}`;
         }
@@ -76,7 +80,7 @@ export default (options = {}) => {
               stack: err.stack || null,
               code: err.code || null,
               status: err.status || null,
-              response: err.response.data || null,
+              response: err.response?.data || null,
             };
             reject(err);
             options.onError(r);

@@ -6,12 +6,14 @@ export default defineNuxtConfig({
   modules: [
     ["@nuxt/icon", {}],
     ["@nuxt/scripts", {}],
+    ["@vueuse/nuxt", {}],
+    ["@pinia/nuxt", {}],
     [
       "nuxt-quasar-ui",
       {
         plugins: ["Notify"],
       },
     ],
-    ["@vueuse/nuxt", {}],
+    "@pinia/nuxt",
   ],
 });

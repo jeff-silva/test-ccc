@@ -34,7 +34,9 @@
       side="left"
       class="bg-grey-2 text-grey-9"
     >
-      <div>Aaa</div>
+      <template v-if="app.user">
+        <div class="q-pa-md bg-grey-4">Bem vindo {{ app.user.name }}</div>
+      </template>
       <q-list>
         <template v-for="o in leftDrawer.nav">
           <template v-if="o.children.length > 0">
@@ -49,6 +51,7 @@
                     v-ripple
                     :to="oo.to || null"
                     style="padding-left: 25px"
+                    v-bind="oo.bind"
                   >
                     <q-item-section>{{ oo.title }}</q-item-section>
                   </q-item>
@@ -61,6 +64,8 @@
               clickable
               v-ripple
               :to="o.to || null"
+              :icon="o.icon"
+              v-bind="o.bind"
             >
               <q-item-section>{{ o.title }}</q-item-section>
             </q-item>
@@ -80,7 +85,6 @@
     <q-page-container>
       <div style="padding: 15px">
         <slot></slot>
-        <pre>{{ app }}</pre>
       </div>
     </q-page-container>
   </q-layout>
@@ -118,11 +122,27 @@ const leftDrawer = reactive({
           { title: "Criar", to: "/app_user?edit=" },
         ],
       },
+      {
+        title: "Logout",
+        icon: "bx:bxs-log-out",
+        bind: {
+          onClick() {
+            app.logout();
+          },
+        },
+      },
     ];
 
     const navParse = (items) => {
       return items.map((item) => {
-        item = { title: "", icon: null, to: null, children: [], ...item };
+        item = {
+          title: "",
+          icon: null,
+          to: null,
+          bind: {},
+          children: [],
+          ...item,
+        };
         item.children = navParse(item.children);
         return item;
       });

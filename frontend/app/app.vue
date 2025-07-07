@@ -1,5 +1,7 @@
 <template>
-  <nuxt-page :ready="app.ready" />
+  <div>
+    <nuxt-page :ready="app.ready" />
+  </div>
 </template>
 
 <script setup>

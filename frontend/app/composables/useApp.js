@@ -1,22 +1,31 @@
+import { defineStore } from "pinia";
+
 export default () => {
-  const r = reactive({
-    ready: false,
+  const app = defineStore("useApp", () => {
+    return reactive({
+      ready: false,
 
-    load: useAxios({
-      method: "get",
-      url: "/api/app/load",
-      onSuccess() {
-        r.user = r.load.response.user || null;
-        r.ready = true;
+      load: useAxios({
+        method: "get",
+        url: "/api/app/load",
+        onSuccess() {
+          app.user = app.load.response.user || null;
+        },
+      }),
+
+      user: null,
+
+      logout() {
+        localStorage.removeItem("access_token");
+        setTimeout(() => app.init(), 1000);
       },
-    }),
 
-    user: null,
+      async init() {
+        await app.load.submit();
+        app.ready = true;
+      },
+    });
+  })();
 
-    init() {
-      r.load.submit();
-    },
-  });
-
-  return r;
+  return app;
 };

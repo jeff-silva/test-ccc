@@ -29,7 +29,8 @@
 
 <script setup>
 const $q = useQuasar();
-console.log($q);
+const app = useApp();
+
 const login = useAxios({
   method: "post",
   url: "/api/auth/login",
@@ -37,6 +38,7 @@ const login = useAxios({
   onSuccess() {
     login.data = {};
     localStorage.setItem("access_token", login.response.token.plainTextToken);
+    setTimeout(() => app.init(), 1000);
     $q.notify({
       type: "positive",
       message: "Sucesso",
