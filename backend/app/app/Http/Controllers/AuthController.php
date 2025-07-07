@@ -5,12 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AppUser;
 use App\Http\Requests\AuthRegisterRequest;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
-        return ['login', rand(0, 999)];
+        $user = AppUser::query()
+            ->where('email', $request->email)
+            ->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Credenciais inválidas.'
+            ], 401);
+        }
+
+        $token = $user->createToken('main');
+        return compact(['token']);
     }
 
     public function logout()
