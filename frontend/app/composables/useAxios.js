@@ -8,6 +8,8 @@ export default (options = {}) => {
     params: {},
     headers: {},
     response: null,
+    onSuccess: () => null,
+    onError: () => null,
     ...options,
   };
 
@@ -16,6 +18,17 @@ export default (options = {}) => {
     ...options,
     busy: false,
     error: null,
+    hasErrors() {
+      if (!r.error) return false;
+      if (!r.error.response) return false;
+      if (!r.error.response.errors) return false;
+      return true;
+    },
+    getError(field) {
+      if (!r.hasErrors()) return null;
+      const message = r.error.response.errors[field] || null;
+      return (message || []).join(", ");
+    },
     axiosOptions() {
       const opts = {
         method: "get",
@@ -23,11 +36,10 @@ export default (options = {}) => {
         data: {},
         params: {},
         headers: {},
-        ...options,
       };
 
       for (let attr in opts) {
-        let value = opts[attr];
+        let value = options[attr] || opts[attr] || null;
         if (typeof value == "function") {
           value = value();
         }
@@ -51,17 +63,18 @@ export default (options = {}) => {
             const resp = await axios(opts);
             r.response = resp.data;
             resolve(resp);
+            options.onSuccess(r.response);
           } catch (err) {
-            reject(
-              (r.error = {
-                name: err.name || null,
-                message: err.message || null,
-                stack: err.stack || null,
-                code: err.code || null,
-                status: err.status || null,
-                response: err.response || null,
-              })
-            );
+            r.error = {
+              name: err.name || null,
+              message: err.message || null,
+              stack: err.stack || null,
+              code: err.code || null,
+              status: err.status || null,
+              response: err.response.data || null,
+            };
+            reject(err);
+            options.onError(r);
           }
           r.busy = false;
         });

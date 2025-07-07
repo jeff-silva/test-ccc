@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AppUser;
+use App\Http\Requests\AuthRegisterRequest;
 
 class AuthController extends Controller
 {
@@ -16,9 +18,10 @@ class AuthController extends Controller
         return ['logout'];
     }
 
-    public function register()
+    public function register(AuthRegisterRequest $request)
     {
-        return ['register'];
+        $entity = AppUser::create($request->validated());
+        return compact(['entity']);
     }
 
     public function password()
