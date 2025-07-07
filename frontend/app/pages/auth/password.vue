@@ -1,6 +1,6 @@
 <template>
   <nuxt-layout name="admin">
-    <div>Dashboard</div>
+    <div>Alterar Senha</div>
   </nuxt-layout>
 </template>
 

@@ -8,7 +8,7 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return ['login'];
+        return ['login', rand(0, 999)];
     }
 
     public function logout()

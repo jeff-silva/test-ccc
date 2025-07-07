@@ -7,5 +7,6 @@ export default defineNuxtConfig({
     ["@nuxt/icon", {}],
     ["@nuxt/scripts", {}],
     ["nuxt-quasar-ui", {}],
+    ["@vueuse/nuxt", {}],
   ],
 });

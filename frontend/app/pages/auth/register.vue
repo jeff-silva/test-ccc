@@ -1,6 +1,6 @@
 <template>
   <nuxt-layout name="admin">
-    <div>Dashboard</div>
+    <div>Cadastro</div>
   </nuxt-layout>
 </template>
 
