@@ -36,8 +36,53 @@ class AuthController extends Controller
         return compact(['entity']);
     }
 
-    public function password()
+    public function password(Request $request)
     {
-        return ['password'];
+        $email = $request->input('email');
+        $password_reset_token = $request->input('password_reset_token');
+        $password = $request->input('password');
+        $password_confirmation = $request->input('password_confirmation');
+
+        $step = 'start';
+        $user = null;
+        $message = 'Informe o e-mail para redefinir a senha.';
+        $message_type = 'info';
+
+        if ($email) {
+            $user = AppUser::query()
+                ->where('email', $email)
+                ->first();
+        }
+
+        if ($email && !$password_reset_token && !$password) {
+            $step = 'email';
+            $message = 'Informe o código enviado por e-mail. Informe-o no campo abaixo.';
+            $message_type = 'info';
+            $user->password_reset_token = $user->password_reset_token ??
+                substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 2)), 0, 5);
+        }
+
+        if ($email && $password_reset_token && !$password) {
+            $step = 'password_reset_token';
+            $message = 'Informe a senha nova.';
+            $message_type = 'info';
+        }
+
+        if ($email && $password_reset_token && $password) {
+            $step = 'password';
+            if ($password == $password_confirmation) {
+                $message = 'Senha alterada';
+                $message_type = 'success';
+                $step = 'finish';
+                $user->password = Hash::make($password);
+                $user->password_reset_token = null;
+                $user->save();
+            } else {
+                $message = 'As senhas não conferem.';
+                $message_type = 'error';
+            }
+        }
+
+        return compact(['step', 'message', 'message_type']);
     }
 }

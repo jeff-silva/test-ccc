@@ -23,7 +23,6 @@
           :loading="login.busy"
         />
       </div>
-      <pre>{{ login }}</pre>
     </form>
   </nuxt-layout>
 </template>
