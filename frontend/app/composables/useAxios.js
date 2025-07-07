@@ -48,6 +48,11 @@ export default (options = {}) => {
 
       if (opts.url && opts.url.startsWith("/api")) {
         opts.url = opts.url.replace("/api", "http://localhost:8000/api");
+
+        const access_token = localStorage.getItem("access_token");
+        if (access_token) {
+          opts.headers["Authorization"] = `Bearer ${access_token}`;
+        }
       }
 
       return opts;

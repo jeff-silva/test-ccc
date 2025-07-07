@@ -2,8 +2,7 @@
   <q-layout view="lHr lpR lFr">
     <q-header
       reveal
-      elevated
-      class="bg-primary text-white"
+      class="bg-transparent text-grey-9"
     >
       <q-toolbar>
         <q-btn
@@ -14,21 +13,23 @@
           @click="leftDrawer.toggle()"
         />
 
-        <q-toolbar-title> Title </q-toolbar-title>
+        <!-- <q-toolbar-title> Title </q-toolbar-title> -->
+        <!-- <q-space /> -->
 
-        <q-btn
+        <!-- <q-btn
           dense
           flat
           round
           icon="menu"
           @click="rightDrawer.toggle()"
-        />
+        /> -->
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawer.open"
       side="left"
+      class="bg-grey-2 text-grey-9"
     >
       <q-list>
         <template v-for="o in leftDrawer.nav">
@@ -96,6 +97,14 @@ const leftDrawer = reactive({
           { title: "Login", icon: "mdi:home", to: "/auth" },
           { title: "Cadastro", to: "/auth/register" },
           { title: "Alterar Senha", to: "/auth/password" },
+        ],
+      },
+      {
+        title: "Usuários",
+        icon: "material-symbols:account-box",
+        children: [
+          { title: "Listar", icon: "mdi:home", to: "/app_user" },
+          { title: "Criar", to: "/app_user?edit=" },
         ],
       },
     ];
