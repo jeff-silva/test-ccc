@@ -1,15 +1,22 @@
 export default () => {
-  const load = useAxios({
-    method: "get",
-    url: "/api/app/load",
+  const r = reactive({
+    ready: false,
+
+    load: useAxios({
+      method: "get",
+      url: "/api/app/load",
+      onSuccess() {
+        r.user = r.load.response.user || null;
+        r.ready = true;
+      },
+    }),
+
+    user: null,
+
+    init() {
+      r.load.submit();
+    },
   });
 
-  const ready = computed(() => {
-    return !load.busy;
-  });
-
-  const r = reactive({ ready, load });
-
-  r.load.submit();
   return r;
 };

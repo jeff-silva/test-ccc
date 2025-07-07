@@ -1,13 +1,8 @@
 <template>
-  <div>
-    <pre>{{ app }}</pre>
-    <div v-if="app.ready">aa</div>
-    <!-- <div v-if="app.ready">
-      <nuxt-page />
-    </div> -->
-  </div>
+  <nuxt-page :ready="app.ready" />
 </template>
 
 <script setup>
 const app = useApp();
+app.init();
 </script>

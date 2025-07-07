@@ -1,5 +1,8 @@
 <template>
-  <q-layout view="lHr lpR lFr">
+  <q-layout
+    view="lHr lpR lFr"
+    v-if="$props.ready"
+  >
     <q-header
       reveal
       class="bg-transparent text-grey-9"
@@ -31,6 +34,7 @@
       side="left"
       class="bg-grey-2 text-grey-9"
     >
+      <div>Aaa</div>
       <q-list>
         <template v-for="o in leftDrawer.nav">
           <template v-if="o.children.length > 0">
@@ -76,12 +80,19 @@
     <q-page-container>
       <div style="padding: 15px">
         <slot></slot>
+        <pre>{{ app }}</pre>
       </div>
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
+const $props = defineProps({
+  ready: { type: Boolean, default: true },
+});
+
+const app = useApp();
+
 const leftDrawer = reactive({
   open: true,
   toggle() {

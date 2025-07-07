@@ -25,9 +25,10 @@ class AuthController extends Controller
         return compact(['token']);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        return ['logout'];
+        $request->user()->currentAccessToken()->delete();
+        return ['status' => 'ok'];
     }
 
     public function register(AuthRegisterRequest $request)
